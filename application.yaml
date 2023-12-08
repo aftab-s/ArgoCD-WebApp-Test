@@ -1,0 +1,31 @@
+# Argo CD Configuration
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp-argo-application
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL:  https://github.com/aftab-s/ArgoCD-WebApp-Test.git
+    targetRevision: HEAD
+    path: hover-dev
+  destination:
+    server: https://kubernetes.default.svc
+    # Specify which namespace the config files in the repo should be applied to
+    namespace: myapp
+
+  # Since by default there is no myapp namespace setup prior,
+  # We have to make argo cd create a namespace "myapp" automatically while deploying the K8s cluster.
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true # By default, it'll be set to false
+
+      automated: # this attribute will pull changes from (polls) git repo every 3 minute intervals
+      # If that delay has to be removed, you can configure a Git Webhook
+        selfHeal: true # Since by default, changes made to the live cluster manually will not trigger automated sync
+        prune: true # If service.yaml is deleted in the git repo, the service must be deleted from the whole cluster also
+
+
