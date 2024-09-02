@@ -17,3 +17,10 @@ spec:
         image: aftab2010/hello-world-hover:v2
         ports:
         - containerPort: 80
+        resources:
+          limits:
+            memory: "256Mi"  # Adjust the memory limit based on your requirements
+            cpu: "200m"      # Adjust the CPU limit based on your requirements
+          requests:
+            memory: "128Mi"  # Adjust the memory request based on your requirements
+            cpu: "100m"      # Adjust the CPU request based on your requirements
